@@ -1,0 +1,42 @@
+
+service: localstack-lambda
+plugins:
+  - serverless-offline
+  - serverless-localstack
+  - serverless-plugin-typescript
+
+custom:
+  localstack:
+    debug: true
+    stages:
+     - local
+     - dev
+    endpointFile: localstack_endpoints.json
+    
+frameworkVersion: '3.20.0'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+    - http:
+        path: /hello
+        method: get
+  getCustomers:
+    handler: handler.getCustomers
+    events:
+    - httpApi:
+        path: /getCustomer
+        method: get
+  hellots:
+    handler: hello.handle
+    events:
+    - httpApi:
+        path: /hellots
+        method: get
+
